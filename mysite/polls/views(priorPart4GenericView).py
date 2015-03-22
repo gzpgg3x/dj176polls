@@ -6,7 +6,7 @@ from polls.models import Question, Choice
 from django.shortcuts import render_to_response, render, get_object_or_404
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.views import generic
+
 
 # def index(request):
 #     return HttpResponse('Hello World, this is polls homepage.')
@@ -31,20 +31,11 @@ from django.views import generic
 #     context = RequestContext(request, {'latest_question_list': latest_question_list,})    
 #     return HttpResponse(template.render(context))
 
-# # Per djangoproject tutorial shortcuts
-# def index(request):
-#     latest_question_list = Question.objects.order_by('-pub_date')[:2]
-#     context = {'latest_question_list': latest_question_list,}
-#     return render(request, 'polls/index.html', context) 
-
-# Per part4Generic View
-class IndexView(generic.ListView):
-    template_name = 'polls/index.html'
-    context_object_name = 'latest_question_list'
-
-    def get_queryset(self):
-        """Reutrn the last five published question."""
-        return Question.objects.order_by('-pub_date')[:5]   
+# Per djangoproject tutorial shortcuts
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:2]
+    context = {'latest_question_list': latest_question_list,}
+    return render(request, 'polls/index.html', context)    
 
 # # Per djangoproject tutorial
 # def detail(request, question_id):
@@ -58,14 +49,10 @@ class IndexView(generic.ListView):
 #         raise Http404('Question does not exist')
 #     return render(request, 'polls/detail.html', {'question': question})
 
-# # A shortcut: get_object_or_404()
-# def detail(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'polls/detail.html', {'question': question})
-
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = 'polls/detail.html'
+# A shortcut: get_object_or_404()
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/detail.html', {'question': question})
 
 # # Placeholder prior Tutorial 4
 # def results(request, question_id):
@@ -94,15 +81,9 @@ def vote(request, question_id):
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
 
-# # prior part4Generic View
-# def results(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'polls/results.html', {'question': question})
-
-# part4Generic view
-class ResultsView(generic.DetailView):
-    model = Question
-    template_name = 'polls/results.html'
+def results(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/results.html', {'question': question})
 
 
 
